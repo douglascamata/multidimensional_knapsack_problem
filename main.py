@@ -30,15 +30,7 @@ if __name__ == '__main__':
     #                 ('Cap', 4, 3, 2), ('Cookie', 4, 2, 2), ('iPod', 5, 3, 3)
     #             ]
     #         ]
-    if len(sys.argv) > 1:
-        max_iter = int(sys.argv[1])
-        tabu_list_size = int(sys.argv[2])
 
-    bag = Knapsack(*bag_from_file('data3.txt'), tabu_list=TabuList(tabu_list_size))
-    bag.optimize(random_add_solution, TabuSearch(max_iter), all_neighborhood)
+    bag = Knapsack(*bag_from_file('data3.txt'), tabu_list=TabuList(50))
+    bag.optimize(random_add_solution, TabuSearch(100), all_neighborhood)
     # bag.optimize(random_add_solution, first_improving_neighborhood, first_improving)
-
-    # greedy_solution(bag, items)
-    # print solution_neighborhood(bag, items)
-
-
