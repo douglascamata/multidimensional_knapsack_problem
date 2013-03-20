@@ -4,6 +4,12 @@ Multidimensional Knapsack Problem
 A repository made to host something like a tiny framework to apply heuristics and metaheuristics to the 
 multidimensional knapsack problem for a college exercise.
 
+To Run
+------
+
+Simply call `python main.py`. You may edit it to use your own created functions or those made by me
+(see the knapsack folder).
+
 Instructions
 ------------
 
