@@ -40,12 +40,11 @@ class TabuSearch(object):
             self.iter_counter += 1
             if not len(sorted_moves) == 0: # se a lista tabu nao eliminou todos vizinhos
                 candidate_move = sorted_moves.pop(0) # pegar o melhor movimento possivel
-                knapsack.execute_movement(candidate_move, silent=True)
-                actual_solution = knapsack.value
-                knapsack.execute_movement(candidate_move.reverse(), silent=True)
+                actual_solution = knapsack.value + candidate_move.movement_avaliation
                 knapsack.execute_movement(candidate_move)
                 knapsack.tabu_list.append(candidate_move.reverse())
                 if actual_solution > best_solution:
+                    print "Current iter %d, actual solution %d, better solution found in %d with %d" % (self.iter_counter, actual_solution, self.iter_better, best_solution)
                     best_solution = actual_solution
                     best_solution_moves = deepcopy(knapsack.moves_made)
                     best_solution_items = deepcopy(knapsack.items)
@@ -56,17 +55,14 @@ class TabuSearch(object):
                     return False
                 best_tabu = reduce(lambda x, y: x if x.movement_avaliation > y.movement_avaliation else y, knapsack.tabu_list)
                 if best_tabu.movement_avaliation > 0: # se ele apresentar uma melhora real na solucao atual
-                    knapsack.execute_movement(best_tabu, silent=True)
-                    actual_solution = knapsack.value
-                    knapsack.execute_movement(best_tabu.reverse(), silent=True)
-                    if actual_solution > knapsack.value:
-                        # print 'Aspiration criteria applied, yay!'
-                        if actual_solution > best_solution:
-                            best_solution = actual_solution
-                            best_solution_moves = deepcopy(knapsack.moves_made)
-                            best_solution_items = deepcopy(knapsack.items)
-                            self.iter_better = self.iter_counter
-                        knapsack.execute_movement(best_tabu)
+                    actual_solution = knapsack.value + best_tabu.movement_avaliation
+                    if actual_solution > best_solution:
+                        print "[TABU] Current iter %d, actual solution %d, better solution found in %d with %d" % (self.iter_counter, actual_solution, self.iter_better, best_solution)
+                        best_solution = actual_solution
+                        best_solution_moves = deepcopy(knapsack.moves_made)
+                        best_solution_items = deepcopy(knapsack.items)
+                        self.iter_better = self.iter_counter
+                    knapsack.execute_movement(best_tabu)
                 else:
                     print knapsack.tabu_list
                     print 'Ended by tabu list.'
@@ -75,11 +71,12 @@ class TabuSearch(object):
             solutions = neighborhood_function(knapsack)
             sorted_moves = self.sort_moves(solutions)
             [sorted_moves.remove(tabu.reverse()) for tabu in knapsack.tabu_list if tabu.reverse() in sorted_moves]
-            print "Current iter %d, actual solution %d, better solution found in %d with %d" % (self.iter_counter, actual_solution, self.iter_better, best_solution)
+            # print "Current iter %d, actual solution %d, better solution found in %d with %d" % (self.iter_counter, actual_solution, self.iter_better, best_solution)
+        knapsack.value = best_solution
         knapsack.items = best_solution_items
         knapsack.moves_made = best_solution_moves
-        print knapsack.value
         print "Better solution found in %d with %d" % (self.iter_better, best_solution)
+        
         print 'Script ran with tabu search using a max of %d iterations and a tabu list with size %d.' % (self.max_iter, knapsack.tabu_list.size)
         if not tabu_ended:
             print 'Ended by iteration limit.'
