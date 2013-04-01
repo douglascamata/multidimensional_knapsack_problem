@@ -31,6 +31,6 @@ if __name__ == '__main__':
     #             ]
     #         ]
 
-    bag = Knapsack(*bag_from_file('data3.txt'), tabu_list=TabuList(50))
-    bag.optimize(random_add_solution, TabuSearch(100), all_neighborhood)
+    bag = Knapsack(*bag_from_file('data.txt'), tabu_list=TabuList(200))
+    bag.optimize(random_add_solution, TabuSearch(300), all_neighborhood)
     # bag.optimize(random_add_solution, first_improving_neighborhood, first_improving)
