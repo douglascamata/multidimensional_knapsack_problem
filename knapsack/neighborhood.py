@@ -44,12 +44,13 @@ def all_neighborhood(knapsack):
         volume_to_lose = item.volume
         weight_to_lose = item.weight
         while volume_to_lose > 0 and weight_to_lose > 0:
-            solution_item = choice(knapsack.all_items)
+            solution_item = choice(knapsack.items)
             to_remove.append(solution_item)
             weight_to_lose -= solution_item.weight
             volume_to_lose -= solution_item.volume
             i += 1
-        movement = Movement(add_items=[item,], remove_items=to_remove)
+            movement = Movement(add_items=[item,], remove_items=to_remove)
+            neighborhood.append(movement)
 
         for solution_item in knapsack.items:
             if knapsack.can_add_item(item):

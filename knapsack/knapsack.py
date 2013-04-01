@@ -29,30 +29,11 @@ class Knapsack(object):
         self.value = 0
         self.all_items = all_items
         self.initial_value = 0
-        self._items = []
+        self.items = []
         self.movement_counter = 0
         self.moves_made = []
         for key in kwargs.keys():
             setattr(self, key, kwargs[key])
-
-    def set_items(self, items):
-        if len(items) == 0:
-            self._items = []
-        total_weight = reduce(lambda x, y: x + y, map(lambda item: item.weight, items))
-        total_volume = reduce(lambda x, y: x + y, map(lambda item: item.volume, items))
-        total_value = reduce(lambda x, y: x + y, map(lambda item: item.value, items))
-        if total_weight < self.initial_weight and total_volume < self.initial_volume:
-            self._items = items
-            self.weight = self.initial_weight - total_weight
-            self.volume = self.initial_volume - total_volume
-            self.value = total_value
-        else:
-            return False
-    def get_items(self):
-        return self._items
-    def del_items(self):
-        del self._items
-    items = property(get_items, set_items, del_items, 'Items')
 
     def optimize(self, initial_solution_function, heuristic_function, neighborhood_function):
         start = clock()

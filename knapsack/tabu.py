@@ -51,8 +51,8 @@ class TabuSearch(object):
                     self.iter_better = self.iter_counter
             else: # se eliminou todos vizinhos
                 # encontra o tabu com melhor melhora
-                if len(knapsack.tabu_list) == 0:
-                    return False
+                # if len(knapsack.tabu_list) == 0:
+                    # return False
                 best_tabu = reduce(lambda x, y: x if x.movement_avaliation > y.movement_avaliation else y, knapsack.tabu_list)
                 if best_tabu.movement_avaliation > 0: # se ele apresentar uma melhora real na solucao atual
                     actual_solution = knapsack.value + best_tabu.movement_avaliation
@@ -63,19 +63,17 @@ class TabuSearch(object):
                         best_solution_items = deepcopy(knapsack.items)
                         self.iter_better = self.iter_counter
                     knapsack.execute_movement(best_tabu)
-                else:
-                    print knapsack.tabu_list
-                    print 'Ended by tabu list.'
-                    tabu_ended = True
-                    break
             solutions = neighborhood_function(knapsack)
             sorted_moves = self.sort_moves(solutions)
             [sorted_moves.remove(tabu.reverse()) for tabu in knapsack.tabu_list if tabu.reverse() in sorted_moves]
             # print "Current iter %d, actual solution %d, better solution found in %d with %d" % (self.iter_counter, actual_solution, self.iter_better, best_solution)
+
+        print "Better solution found in %d with %d" % (self.iter_better, best_solution)
+        print knapsack.value
+        print best_solution
         knapsack.value = best_solution
         knapsack.items = best_solution_items
         knapsack.moves_made = best_solution_moves
-        print "Better solution found in %d with %d" % (self.iter_better, best_solution)
         
         print 'Script ran with tabu search using a max of %d iterations and a tabu list with size %d.' % (self.max_iter, knapsack.tabu_list.size)
         if not tabu_ended:
