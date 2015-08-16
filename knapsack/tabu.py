@@ -69,12 +69,10 @@ class TabuSearch(object):
             # print "Current iter %d, actual solution %d, better solution found in %d with %d" % (self.iter_counter, actual_solution, self.iter_better, best_solution)
 
         print "Better solution found in %d with %d" % (self.iter_better, best_solution)
-        print knapsack.value
-        print best_solution
         knapsack.value = best_solution
         knapsack.items = best_solution_items
         knapsack.moves_made = best_solution_moves
-        
+
         print 'Script ran with tabu search using a max of %d iterations and a tabu list with size %d.' % (self.max_iter, knapsack.tabu_list.size)
         if not tabu_ended:
             print 'Ended by iteration limit.'
@@ -82,4 +80,3 @@ class TabuSearch(object):
 
     def sort_moves(self, moves):
         return sorted(moves, key=lambda x: x.movement_avaliation, reverse=True)
-
